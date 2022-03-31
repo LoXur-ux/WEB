@@ -21,6 +21,8 @@
 </template>
 
 <script lang="ts">
+import axios from "axios";
+
 export default {
   name: "LoginForm",
   data: () => ({
@@ -46,6 +48,28 @@ export default {
       this.isShowPass = !this.isShowPass;
       if (this.isShowPass) this.passType = "text";
       else this.passType = "password";
+    },
+
+    sendRequest() {
+      const url = this.url + "/auth/check";
+      const headers = {
+        "Content-Type": "application/json",
+        "x-mock-match-request-body": "true",
+      };
+
+      const data = {
+        login: (document.getElementById("login-inp") as HTMLInputElement).value,
+        password: (document.getElementById("pass-inp") as HTMLInputElement).value,
+      };
+
+      axios
+        .post(url, data, { headers })
+        .then((res) => {
+          alert("Successful Authorization!");
+        })
+        .catch((err) => {
+          alert("Somthing was wrong!");
+        });
     },
   },
 };
