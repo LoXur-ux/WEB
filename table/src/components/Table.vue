@@ -55,25 +55,26 @@
 import { Options, Vue } from 'vue-class-component';
 import axios from 'axios';
 
-const url = 'https://ca4952d7-b451-4173-96a4-879f680514d1.mock.pstmn.io/stud';
-
-@Options({
+export default {
+  name: 'Table',
   data: () => ({
     showModal: Boolean,
     id: String,
     firName: String,
     secName: String,
     avgScore: String,
+    url: String,
     stud: {},
     list: [],
   }),
   created() {
     this.showModal = false;
+    this.url = 'https://ca4952d7-b451-4173-96a4-879f680514d1.mock.pstmn.io/stud';
   },
   methods: {
     findAll() {
       axios
-        .get(`${url}/all`)
+        .get(`${this.url}/all`)
         .then((res) => {
           console.log(res.data);
           this.list = res.data;
@@ -84,7 +85,7 @@ const url = 'https://ca4952d7-b451-4173-96a4-879f680514d1.mock.pstmn.io/stud';
     },
     findOne() {
       axios
-        .get(`${url}/one`)
+        .get(`${this.url}/one`)
         .then((res) => {
           console.log(res.data);
           this.list = res.data;
@@ -110,10 +111,10 @@ const url = 'https://ca4952d7-b451-4173-96a4-879f680514d1.mock.pstmn.io/stud';
       this.showModal = false;
     },
   },
-})
-export default class MyTable extends Vue {}
+};
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container {
   width: 400px;
@@ -175,18 +176,19 @@ button:active {
 }
 
 .modal-shadow {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   min-height: 100%;
   width: 100%;
-  background: rgba(0, 0, 0, 0.39);
+  background: rgba(0, 0, 0, 0.75);
 }
 
 .modal {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%);
 
   padding: 6px;
 
@@ -194,7 +196,7 @@ button:active {
   background: linear-gradient(45deg, #6e5642, #253547);
   border-radius: 6px;
 
-  transform: translate(-50%, -50%);
+  transition: 0.3s all;
 }
 
 .head {
@@ -208,16 +210,16 @@ button:active {
   border-radius: 6px;
 }
 
-.modal-table tr td{
+.modal-table tr td {
   margin: 4px 0;
   padding: 4px 8px;
 }
 
-.modal-table tr td:first-child{
+.modal-table tr td:first-child {
   text-align: right;
 }
 
-.modal-table tr td:last-child{
+.modal-table tr td:last-child {
   text-align: left;
 }
 
